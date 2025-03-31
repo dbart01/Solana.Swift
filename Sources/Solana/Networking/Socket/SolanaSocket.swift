@@ -142,8 +142,10 @@ extension SolanaSocket: WebSocketDelegate {
         case .viabilityChanged: break
         case .reconnectSuggested: break
         case .cancelled: break
-        case .error(let error): break
+        case .error(let error):
             self.delegate?.error(error: error)
+        case .peerClosed:
+            self.delegate?.error(error: nil)
         }
     }
 
@@ -169,6 +171,8 @@ extension SolanaSocket: WebSocketDelegate {
             if enableDebugLogs { debugPrint("cancelled") }
         case .error(let error):
             if enableDebugLogs { debugPrint("error \(error?.localizedDescription ?? "")") }
+        case .peerClosed:
+            if enableDebugLogs { debugPrint("peerClosed") }
         }
     }
 
